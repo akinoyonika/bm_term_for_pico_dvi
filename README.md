@@ -1,12 +1,13 @@
 # Raspberry pi Pico用bm_term
 
-<div style="text-align:right">2026年9月25日</div>
+<div style="text-align:right">2026年9月30日</div>
 
 ## 概要
 
 ![画面に様々な文字を表示](display.png)
 
-リモートシェルサーバーbm_shellのクライアントbm_termを[Raspberry Pi Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/)で作成しました。
+リモートシェルサーバー[bm_shell](http://akino-yo.f5.si/akinoyonika/bm_shell/)のクライアントbm_termを[Raspberry Pi Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/)で作成しました。
+モニターとキーボードを接続したRaspberry Pi Picoでbm_shellが稼働しているlinuxマシンにログインし、リモートシェルを実現します。
 以下に、注意点を示します。
 
 - picoで構成されたbm_termは通信インターフェイスをシリアルポートとしています。
@@ -135,7 +136,7 @@ set(LIBRARIES
 )
 ```
 
-<tt>bmt_main.c</tt>の編集では、定義<tt>IS_CON_HWSERIAL</tt>の値を1に、定義<tt>UART_BOUD_RATE</tt>の値を3000000に変更してください。
+<tt>bmt_main.c</tt>の編集では、定義<tt>IS_CON_HWSERIAL</tt>の値を1に、定義<tt>UART_BOUD_RATE</tt>の値を2000000に変更してください。
 
 ```
 #include "net_config.h"
@@ -162,7 +163,7 @@ set(LIBRARIES
 #if IS_CON_HWSERIAL
 #   include "hardware/uart.h"
 #   define UART_ID (uart0)
-#   define UART_BOUD_RATE (3000000)
+#   define UART_BOUD_RATE (2000000)
 #   define GPIO_UART_TX  (0) // PIN 1
 #   define GPIO_UART_RX  (1) // PIN 2
 #   define GPIO_UART_CTS (2) // PIN 4
@@ -170,7 +171,8 @@ set(LIBRARIES
 #endif
 ```
 
-<tt>net_config.h</tt>の編集はespress_sttream_for_pico_wのドキュメントを参考にしてください。
+<tt>net_config.h</tt>の編集はRaspberry Pi Pico W用espress_streamのドキュメントを参考にしてください。
+<tt>net_config.h</tt>にあるアドレス、ポート、公開鍵の情報は接続するサーバー(bm_shell)の情報になります。
 
 ### USBキーボード
 
@@ -216,9 +218,16 @@ USBキーボードからType-Aプラグが出ている場合、Micro-Bレセプ�
 本システムのソフトウェアはソースパッケージにて提供しています。
 以下をダウンロードしてください。
 
-- [bm_term_for_pico_dvi.20260925.tar.gz](http://akino-yo.f5.si/akinoyonika/bm_term_for_pico_dvi/bm_term_for_pico_dvi.20260925.tar.gz)
+- [bm_term_for_pico_dvi.20260930.tar.gz](http://akino-yo.f5.si/akinoyonika/bm_term_for_pico_dvi/bm_term_for_pico_dvi.20260930.tar.gz)
 
 <details><summary>変更履歴</summary>
+
+bm_term_for_pico_dvi.20260930.tar.gz
+: <ul>
+    <li>UARTのボーレートを調整。</li>
+    <li>モニター出力関連のファンクションはRAM上で動作するように設定。</li>
+    <li>ドキュメント加筆修正。</li>
+  </ul>
 
 bm_term_for_pico_dvi.20260925.tar.gz
 : <ul>
@@ -275,6 +284,8 @@ Fontconfigに渡され、フォントが検索されます。
 これをPicoに導入してください。
 
 ## 使用方法
+
+ログインしたいlinuxマシン上でbm_shellを稼働させておいてください。
 
 HDMIケーブルをモニターに接続せず、Picoの電源を投入します。
 (本ハードウェア構成では電源ONのモニターをHDMI端子に接続すると電源がPicoに回り込んでしまうようで、そのあと電源を投入してもうまくリセットがかかりませんでした。)

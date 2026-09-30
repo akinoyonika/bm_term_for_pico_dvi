@@ -44,7 +44,7 @@
 #	define ROWS "24"
 #endif
 
-static bool repeating_timer_callback(struct repeating_timer *t)
+static bool __not_in_flash_func(repeating_timer_callback)(struct repeating_timer *t)
 {
 	(void)t;
 	yield_display();

@@ -3,7 +3,7 @@
 
 #define UART_ID (uart0)
 // #define UART_BOUD_RATE (921600)
-#define UART_BOUD_RATE (3000000)
+#define UART_BOUD_RATE (2000000)
 #define GPIO_UART_TX  (0) // PIN 1
 #define GPIO_UART_RX  (1) // PIN 2
 #define GPIO_UART_CTS (2) // PIN 4
