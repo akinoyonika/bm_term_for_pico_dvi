@@ -1,13 +1,5 @@
-#ifndef __DISPLAY_H__
-#define __DISPLAY_H__
-
-// Pick one:
-// #define MODE_640x480_60Hz
-// #define MODE_720x480_60Hz
-// #define MODE_800x480_60Hz
-// #define MODE_800x600_60Hz
-// #define MODE_960x540p_60Hz
-// #define MODE_1280x720_30Hz
+#ifndef __BMT_DISP_H__
+#define __BMT_DISP_H__
 
 #if defined(MODE_640x480_60Hz)
 	// DVDD 1.2V (1.1V seems ok too)
@@ -53,11 +45,15 @@
 #define FRAME_BUFFER_WIDTH (FRAME_WIDTH / 2)
 #define FRAME_BUFFER_HEIGHT (FRAME_HEIGHT / 2)
 
-extern uint8_t display_frame_buffer[FRAME_BUFFER_WIDTH * FRAME_BUFFER_HEIGHT];
+struct bmt_disp_ops {
+	void (*init)(void);
+	int (*begin)(int w, int h);
+	void (*end)(void);
+	void (*update)(int x, int y, int w, int h, uint8_t *bitmap);
+	void (*present)(void);
+	void (*ring)(void);
+};
 
-void sysinit_display(void);
-void init_display(uint8_t const *frame_buffer);
-int yield_display(void);
-void display_main(void);
+extern struct bmt_disp_ops const bmt_disp[];
 
-#endif /* __DISPLAY_H__ */
+#endif /* __BMT_DISP_H__ */

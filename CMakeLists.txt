@@ -30,10 +30,12 @@ set(DEFINITIONS
 set(INCLUDES
 	PicoDVI/include
 	PicoDVI/libdvi
+	bm_term/include
 )
 
 file(GLOB SOURCES
 	*.c
+	bm_term/src/*.c
 )
 
 set(LIBRARIES

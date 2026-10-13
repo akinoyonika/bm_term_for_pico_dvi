@@ -6,6 +6,14 @@
 /PicoDVI/include/*
 !/PicoDVI/libdvi/
 /PicoDVI/libdvi/*
+!/bm_term/
+/bm_term/*
+!/bm_term/include/
+/bm_term/include/*
+!/bm_term/include/bmt/
+/bm_term/include/bmt/*
+!/bm_term/src/
+/bm_term/src/*
 /build/*
 !.gitignore
 !*.h

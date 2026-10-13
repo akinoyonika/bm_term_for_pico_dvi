@@ -3,13 +3,14 @@
 #include <string.h>
 
 #include "pico/stdlib.h"
-#include "pico/multicore.h"
+//#include "pico/multicore.h"
 #include "hardware/irq.h"
 #include "tusb.h"
 
 #include "bmt_config.h"
-#include "display.h"
-#include "bmt_main.h"
+//#include "display.h"
+#include "bmt/disp.h"
+#include "bmt/main.h"
 
 #if   FRAME_WIDTH == 640
 #	define CWPX "8"
@@ -44,7 +45,7 @@
 #	define ROWS "24"
 #endif
 
-static bool __not_in_flash_func(repeating_timer_callback)(struct repeating_timer *t)
+/*static bool __not_in_flash_func(repeating_timer_callback)(struct repeating_timer *t)
 {
 	(void)t;
 	yield_display();
@@ -56,7 +57,7 @@ static void core1_main()
 	init_display(display_frame_buffer);
 	add_repeating_timer_us(1, repeating_timer_callback, NULL, &timer);
 	display_main();
-}
+}*/
 
 int main()
 {
@@ -74,12 +75,13 @@ int main()
 		/* pass = */ PASS
 	}};
 
-	for (u = 0 ; u < (FRAME_BUFFER_HEIGHT * FRAME_BUFFER_WIDTH) ; u++) {
+	/*for (u = 0 ; u < (FRAME_BUFFER_HEIGHT * FRAME_BUFFER_WIDTH) ; u++) {
 		display_frame_buffer[u] = (u % FRAME_BUFFER_WIDTH) & 0xff;
-	}
+	}*/
 
-	sysinit_display();
-	multicore_launch_core1(core1_main);
+	//sysinit_display();
+	//multicore_launch_core1(core1_main);
+	bmt_disp->init();
 
 	stdio_init_all();
 

@@ -1,6 +1,6 @@
 # Raspberry pi Pico用bm_term
 
-<div style="text-align:right">2026年9月30日</div>
+<div style="text-align:right">2026年10月13日</div>
 
 ## 概要
 
@@ -13,7 +13,7 @@
 - picoで構成されたbm_termは通信インターフェイスをシリアルポートとしています。
   単体ではネットワークに接続できないため、ネットワーク接続用に別途Raspberry Pi Pico Wを準備する必要があります。
 - 画面表示のためのDVI (HDMI)接続できるモニターが必要です。
-  DVI出力は640X480 60Hzですが、実際の表示は320X240ピクセル、40X15キャラクターで行われます。
+  DVI出力は640X480 60Hz、720x480 60Hz、800x480 60Hz、800x600 60Hz、960x540p 60Hzのいずれかをメイク時に選択できますが、2x2ピクセルを1x1ピクセルとして描画しますので、実質的な解像度は半分になります。
 - キー入力のためのUSBキーボードが必要です。
   US配列に対応しています。
 - 本製作は組み込み機器上での基本動作を確認するための原理試作としています。
@@ -210,7 +210,7 @@ USBキーボードからType-Aプラグが出ている場合、Micro-Bレセプ�
 
 なお、本システムはUS配列キーボード用になっています。
 他の配列用にするためにはソースコードの変更が必要です。
-(<tt>bmt_main.c</tt>の<tt>tuh_hid_report_received_cb</tt>関数内にキースキャンコードから文字コード、もしくはエスケープシーケンスへの変換テーブルがあります。
+(<tt>src/bmt_key.c</tt>の<tt>tuh_hid_report_received_cb</tt>関数内にキースキャンコードから文字コード、もしくはエスケープシーケンスへの変換テーブルがあります。
 3つありますが、順番に、装飾キーなし、SHIFT装飾あり、CTRL装飾ありに対する変換テーブルです。)
 
 ## パッケージ
@@ -218,9 +218,15 @@ USBキーボードからType-Aプラグが出ている場合、Micro-Bレセプ�
 本システムのソフトウェアはソースパッケージにて提供しています。
 以下をダウンロードしてください。
 
-- [bm_term_for_pico_dvi.20260930.tar.gz](http://akino-yo.f5.si/akinoyonika/bm_term_for_pico_dvi/bm_term_for_pico_dvi.20260930.tar.gz)
+- [bm_term_for_pico_dvi.20261013.tar.gz](http://akino-yo.f5.si/akinoyonika/bm_term_for_pico_dvi/bm_term_for_pico_dvi.20261013.tar.gz)
 
 <details><summary>変更履歴</summary>
+
+bm_term_for_pico_dvi.20261013.tar.gz
+: <ul>
+    <li>表示部、キー入力部をメインから分離し、モジュール化した。</li>
+    <li>モニター出力関連を調整。出力可能解像度の種類を増やした。</li>
+  </ul>
 
 bm_term_for_pico_dvi.20260930.tar.gz
 : <ul>
@@ -265,14 +271,28 @@ $ make
 <tt>bmt_config.h</tt>ではターミナルに関するいくつかの設定を行っています。
 
 ```
-#define MODE_640x480_60Hz
+#define MODE_960x540p_60Hz
 #define FONT "noto sans mono, noto color emoji"
 #define MODE "130"
 #define USER "foo"
 #define PASS "tpfBTht8"
 ```
 
-<tt>MODE_640x480_60Hz</tt>と<tt>MODE</tt>は上記のままで定義してください。
+<tt>MODE</tt>は上記のままで定義してください。
+
+<tt>MODE_960x540p_60Hz</tt>は定義名にあるDVI出力の解像度等を選択するものです。
+以下のいずれかを選択できます。
+
+| define                      | rows | columns | line height | char. width |
+| --------------------------- | ---: | ------: | ----------: | ----------: |
+| <tt>MODE_640x480_60Hz</tt>  |   15 | 40      | 16px        | 8px         |
+| <tt>MODE_720x480_60Hz</tt>  |   15 | 45      | 16px        | 8px         |
+| <tt>MODE_800x480_60Hz</tt>  |   15 | 50      | 16px        | 8px         |
+| <tt>MODE_800x600_60Hz</tt>  |   20 | 50      | 15px        | 8px         |
+| <tt>MODE_960x540p_60Hz</tt> |   18 | 60      | 15px        | 8px         |
+
+モニターの2x2ピクセルを1x1ピクセルとして描画しますので、実質的な解像度は半分になります。
+上記表中の1pxはモニターでは2pxに相当しますので、ご注意ください。
 
 <tt>FONT</tt>はサーバー側のフォントの指定を行います。
 Fontconfigに渡され、フォントが検索されます。
@@ -288,7 +308,7 @@ Fontconfigに渡され、フォントが検索されます。
 ログインしたいlinuxマシン上でbm_shellを稼働させておいてください。
 
 HDMIケーブルをモニターに接続せず、Picoの電源を投入します。
-(本ハードウェア構成では電源ONのモニターをHDMI端子に接続すると電源がPicoに回り込んでしまうようで、そのあと電源を投入してもうまくリセットがかかりませんでした。)
+(本ハードウェア構成では電源ONのモニターをHDMI端子に接続すると電圧がPicoに回り込んでしまうようで、そのあと電源を投入してもうまくリセットがかかりませんでした。)
 そのあとHDMIケーブルをモニターに接続し、カラーパターンが表示されるのを確認します。
 カラーパターンが表示された後、Pico Wの電源を投入します。
 しばらくしてコマンドプロンプトが表示されるでしょう。
