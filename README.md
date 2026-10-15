@@ -1,6 +1,6 @@
 # Raspberry pi Pico用bm_term
 
-<div style="text-align:right">2026年10月13日</div>
+<div style="text-align:right">2026年10月15日</div>
 
 ## 概要
 
@@ -218,9 +218,14 @@ USBキーボードからType-Aプラグが出ている場合、Micro-Bレセプ�
 本システムのソフトウェアはソースパッケージにて提供しています。
 以下をダウンロードしてください。
 
-- [bm_term_for_pico_dvi.20261013.tar.gz](http://akino-yo.f5.si/akinoyonika/bm_term_for_pico_dvi/bm_term_for_pico_dvi.20261013.tar.gz)
+- [bm_term_for_pico_dvi.20261015.tar.gz](http://akino-yo.f5.si/akinoyonika/bm_term_for_pico_dvi/bm_term_for_pico_dvi.20261015.tar.gz)
 
 <details><summary>変更履歴</summary>
+
+bm_term_for_pico_dvi.20261015.tar.gz
+: <ul>
+    <li>パッケージにLICENSEファイルを追加した。</li>
+  </ul>
 
 bm_term_for_pico_dvi.20261013.tar.gz
 : <ul>
@@ -321,7 +326,7 @@ HDMIケーブルをモニターから抜き取り、PicoとPico Wの電源を切
 
 MITライセンスに基づいてリリースされています。
 
-<details><summary>Copyright 2026 akinoyonika</summary>
+<details><summary>Copyright (c) 2026 akinoyonika</summary>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

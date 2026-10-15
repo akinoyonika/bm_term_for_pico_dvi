@@ -23,6 +23,7 @@
 !*.py
 !CMakeLists.txt
 !README.md
+!LICENSE
 !pico_sdk_import.cmake
 !display.png
 bmt_config.h
